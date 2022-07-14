@@ -21,3 +21,6 @@ target_link_libraries(test_functional ${GTSAM_LIBRARIES} )
 add_executable(test_bind src/test_bind.cpp)
 
 add_executable(test_lambda src/test_lambda.cpp)
+
+add_executable(test_loop_initializer src/test_loop_initializer.cpp)
+target_link_libraries(test_loop_initializer ${GTSAM_LIBRARIES} )

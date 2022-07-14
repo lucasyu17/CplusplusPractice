@@ -94,10 +94,11 @@ class A{
     /// with partially fixed argument cost_class_ 
     double call_gh_function(const double& x){
         cout << "calling gh cost function ..." << endl;
-        double res{_class_b.cost_function(x)};
+        double res = _class_b.cost_function(x);
         cout << res << endl;
         return _class_b.cost_function(x);
     }
     
 };
+
 

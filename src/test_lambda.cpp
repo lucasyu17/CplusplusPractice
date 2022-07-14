@@ -19,7 +19,7 @@
 
 #include "../include/functional_lambda_initializer.h"
 
-
+/// example functions 
 double function1(const double& a){
     return 2*a;
 }
@@ -27,6 +27,8 @@ double function1(const double& a){
 double f(const double& a, const double& b){
     return a+b;
 }
+
+
 using Function = std::function<double(const double&, const double&)>;
 
 int main(){

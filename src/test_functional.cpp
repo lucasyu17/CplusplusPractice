@@ -13,7 +13,7 @@
 
 /// Test funcitonal with class members
 
-/// simulation of the template phi function class
+/// example function
 double function1(const double& b, Object obj){
     obj.printKeys();
     return b + obj.a_;
