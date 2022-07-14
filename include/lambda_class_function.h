@@ -9,13 +9,18 @@
  * 
  */
 
-/// Test the lambda expression in initiating the std::function with a class member variable.
+/// Test the lambda expression in initiating std::function, and a nested class
+/// We have a class A, class B, and class Object. Class A is initialized using function
+/// f1=<double(double, Object)> and Object o1. B is nested inside A, having itself a function
+/// f2=<double(double)>. We want to partially fix the parameter Object using that of A
+/// to initialize the f2, and B.
+
 #include <functional>
 #include <gtsam/inference/Symbol.h>
 #include <iostream>
 using namespace std;
 
-/// simulation of the cost class
+/// class Object, whic is needed in constructing the input function
 class Object{
     public:
         Object(const gtsam::Key& key, double a):
@@ -35,47 +40,63 @@ class Object{
         
 };
 
-/// simulation of class Gauss-Hermite
-template <typename FunctionGH, typename ... Args>
-class GH{
+/// nested class B
+template <typename FunctionB>
+class B{
     public:
-        GH(const FunctionGH& _func, const double& other_param):
+        B(const FunctionB& _func, const double& other_param):
         func_{_func}, 
         param_{other_param}{}
 
     public:
-        FunctionGH func_;
+        FunctionB func_;
         double param_;
 
-        void cost_function(Args... args){
-            func_(args...);
-            cout << "finished function call..." << endl;
+        double cost_function(const double& x){
+            cout << "finished function call in B..." << endl;
+            return func_(x);
         }
 
-        void update_function(const FunctionGH& func){
+        void update_function(const FunctionB& func){
             func_ = func;
         }
 
 };
 
-/// simulation of the optimizer class
-template <typename Function, typename CostClass, typename ... Args>
+/// class A
+template <typename CostClass>
 class A{
-  public:
-    
-    A(Function _function, CostClass _cost_class):
-    cost_class_{_cost_class}, 
-    func_{_function},
-    // func_phi{_function},
-    gh_{_function, 1.0}{}
+    using FunctionA = std::function<double(const double&, const CostClass&)>;
+    using FunctionB = std::function<double(const double&)>;
+    public:
+        A(FunctionA _function, CostClass _cost_class):
+            cost_class_{_cost_class}, 
+            func_{_function},
+            func_b{[this](const double& x){return func_(x, cost_class_);}},
+            _class_b{func_b, 1.0}{}
 
-    Function func_;
-    CostClass cost_class_;
-    // std::function<double(const double&, const CostClass&)> func_phi;
-    GH<std::function<double(const double&, const CostClass&)>, CostClass> gh_;
+    public:
+        CostClass cost_class_;
+        FunctionA func_;
+        FunctionB func_b;
+        B<std::function<double(const double&)>> _class_b;
 
-    double cost_function(double bb){
-        func_(bb, cost_class_);
+        double cost_function(double x){
+            
+            cout << "calling A cost function ..." << endl;
+            double res{func_(x, cost_class_)};
+            cout << res << endl;
+
+            return func_(x, cost_class_);
+        }
+
+    /// Calling the cost function inside the nested class B, 
+    /// with partially fixed argument cost_class_ 
+    double call_gh_function(const double& x){
+        cout << "calling gh cost function ..." << endl;
+        double res{_class_b.cost_function(x)};
+        cout << res << endl;
+        return _class_b.cost_function(x);
     }
     
 };

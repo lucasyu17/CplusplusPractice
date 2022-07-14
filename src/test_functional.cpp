@@ -20,19 +20,19 @@ double function1(const double& b, Object obj){
 }
 
 using Func1 = std::function<double(const double&, const Object&)>;
-using A1 = A<Func1, Object>;
+using A1 = A<Object>;
 
 /// main function
 int main()
 {
-    int a = 1.5;
-    Object o1{gtsam::symbol('x', 1), a};
-
-    o1.printKeys();
+    double a = 1.5;
+    Object o1{gtsam::symbol('x', 5.5), a};
 
     A1 a1{function1, o1};
 
     a1.cost_function(2.5);
+
+    a1.call_gh_function(3.5);
     return 0;
 
 }
