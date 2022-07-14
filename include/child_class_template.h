@@ -9,7 +9,8 @@
  * 
  */
 
-/// Extending the parent class with a new template, and without instantiate the parent templates.
+/// Extending a parent class with a new template in the child class,
+/// without instantiating the parent templates.
 
 
 #include "base_class.h"

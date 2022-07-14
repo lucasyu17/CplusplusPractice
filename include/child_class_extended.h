@@ -9,7 +9,8 @@
  * 
  */
 
-/// Extend the child class ChildCost1 with another cost, Function3. The way of extention is to instantiate the template related to the parent.
+/// Extend the child class ChildCost1 with another cost, Function3. 
+/// The way of extention is to instantiate the template related to the parent.
 
 
 #include "child_class.h"
