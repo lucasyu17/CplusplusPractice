@@ -63,12 +63,5 @@ int main(){
 
     a1_collection.interative_call();
 
-    
-
-    // A1 a1{function1, o1};
-
-    // a1.cost_function(2.5);
-
-    // a1.call_gh_function(3.5);
     return 0;
 }

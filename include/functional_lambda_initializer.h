@@ -39,4 +39,8 @@ class A {
         void call_f1(const double& x){
             cout << "calling f1" << endl << _f1(x) << endl;
         }
+
+        void set_b(const double& b){
+            _b = b;
+        }
 };

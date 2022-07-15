@@ -9,31 +9,63 @@
  * 
  */
 
-/// Extending a parent class with a new template in the child class,
-/// without instantiating the parent templates.
+/// Extending a parent class by a new template in the child class.
 
 
-#include "base_class.h"
 #include "functional"
+#include <iostream>
 
 using namespace std;
-    
-typedef std::function<double(const double&, const double&)> Func1;
-typedef std::function<int(const double&, const double&)> Func2;
 
-template <typename Func1, typename Class1, typename ... Args>
-class ChildCostTemplate1 : public Base<Func1, double, double>
+template <typename Function, typename CostClass>
+class Base
 {
-
 public:
-    ChildCostTemplate1(const Func1& _func, const Class1& _class1):
-    Base<Func1, double, double>{_func},
-    class1_{_class1}{}
+    /* data */
+    Function _function;
+    CostClass _cost_class;
+    double _db;
     
-    void child_func(const double& a, const double& b, Args... args){
-        Base<Func1, double, double>::base_func(a, b);
+public:
+    Base(const Function& _func, const CostClass& cost_class, const double& db):
+    _function{_func},
+    _cost_class{cost_class},
+    _db{db}{}
 
-    };
+    void base_function(){
+        cout << "base function" << endl << _db << endl;
+    }
 
-    Class1 class1_;
+};
+    
+using Function2 = std::function<double(const double&)>;
+template <typename CostClass, typename Class1, typename ... Args>
+/// making the cost function type explicit
+class ChildCostTemplate1 : public Base<std::function<double(const double&, const CostClass&, const Class1&)>, CostClass>
+{
+    /// Alias
+using Function = std::function<double(const double&, const CostClass&, const Class1&)>;
+public:
+    ChildCostTemplate1(const Function& func, const CostClass& cost_class, const Class1& class1, const double& db):
+    Base<Function, CostClass>(func, cost_class, db), // base class constructor
+    _class1{class1}, // new cost class
+    _cost_class{cost_class},
+    _function{func},
+    _dc{Base<Function, CostClass>::_db},
+    _func2{[this](const double& x){return _function(x-Base<Function, CostClass>::_db, _cost_class, _class1);}} // new function
+    {}
+    
+    void child_func(const double& x){
+        double res = _func2(x); 
+        cout << "res in child template" << endl << res << endl;
+    }
+
+
+protected:
+    Class1 _class1;
+    CostClass _cost_class;
+    Function _function;
+    double _dc;
+    Function2 _func2;
+
 };
