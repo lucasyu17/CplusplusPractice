@@ -45,14 +45,13 @@ class ChildCostTemplate1 : public Base<std::function<double(const double&, const
 {
     /// Alias
 using Function = std::function<double(const double&, const CostClass&, const Class1&)>;
+using Basealias = Base<Function, CostClass>;
 public:
     ChildCostTemplate1(const Function& func, const CostClass& cost_class, const Class1& class1, const double& db):
-    Base<Function, CostClass>(func, cost_class, db), // base class constructor
+    Basealias(func, cost_class, db), // base class constructor
     _class1{class1}, // new cost class
-    _cost_class{cost_class},
-    _function{func},
-    _dc{Base<Function, CostClass>::_db},
-    _func2{[this](const double& x){return _function(x-Base<Function, CostClass>::_db, _cost_class, _class1);}} // new function
+    _dc{Basealias::_db},
+    _func2{[this](const double& x){return Basealias::_function(x-Basealias::_db, Basealias::_cost_class, _class1);}} // new function
     {}
     
     void child_func(const double& x){
@@ -63,8 +62,6 @@ public:
 
 protected:
     Class1 _class1;
-    CostClass _cost_class;
-    Function _function;
     double _dc;
     Function2 _func2;
 
