@@ -13,7 +13,9 @@ def greet():
     """
     Call the wrapped Greeting code so it can say Hello and Goodbye.
     """
-    greeter = cplayground.PybindTest()
+    v_doble = [1.5,2.0,3.5,4.0]
+    greeter = cplayground.PybindTest(1.5, v_doble)
+    greeter.print_vec()
     return greeter.sayHello()
 
 
