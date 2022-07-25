@@ -35,8 +35,9 @@ int main(){
     FunctionB func1 = std::bind(&functiona, 1.5, std::placeholders::_1);
     func1(2.5);
 
-    B<FunctionB, double> b1(functionb, 1.0);
-    A<FunctionA, double, double> a1 = A<FunctionA, double, double>{functiona, 15, 2.5};
+    /// Bind dose not work.
+    // B<FunctionB, double> b1(functionb, 1.0);
+    // A<FunctionA, double, double> a1 = A<FunctionA, double, double>{functiona, 15, 2.5};
 
     // b1.update_a_func();
 

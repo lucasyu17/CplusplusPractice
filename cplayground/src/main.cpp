@@ -34,7 +34,7 @@ int main()
     // childcost2.child_func(a_0, b_0, a_0, b_0);
 
     /// Test the inheritance without instantiate the parent templates, but adding a new template directly.
-    CostClass cost_class(1);
-    ChildCostTemplate1<Func1, CostClass, double, double> childcosttemplate{func1, cost_class};
+    // CostClass cost_class(1);
+    // ChildCostTemplate1<Func1, CostClass, double, double> childcosttemplate{func1, cost_class};
     return 0;
 }
